@@ -12,6 +12,8 @@ public class BoundsCheck : MonoBehaviour
     public bool isOnScreen = true; // b
     public float camWidth;
     public float camHeight;
+    [HideInInspector]
+    public bool offRight, offLeft, offUp, offDown;
     void Awake()
     {
         camHeight = Camera.main.orthographicSize; // b
@@ -19,32 +21,35 @@ public class BoundsCheck : MonoBehaviour
     }
     void LateUpdate()
     {
-        Vector3 pos = transform.position; // c
-        isOnScreen = true; // d
+        Vector3 pos = transform.position;
+        isOnScreen = true;
+        offRight = offLeft = offUp = offDown = false; // b
         if (pos.x > camWidth - radius)
         {
             pos.x = camWidth - radius;
-            isOnScreen = false; // e
+            offRight = true; // c
         }
         if (pos.x < -camWidth + radius)
         {
             pos.x = -camWidth + radius;
-            isOnScreen = false; // e
+            offLeft = true; // c
         }
         if (pos.y > camHeight - radius)
         {
             pos.y = camHeight - radius;
-            isOnScreen = false; // e
+            offUp = true; // c
         }
         if (pos.y < -camHeight + radius)
         {
             pos.y = -camHeight + radius;
-            isOnScreen = false; // e
+            offDown = true; // c
         }
+        isOnScreen = !(offRight || offLeft || offUp || offDown); // d
         if (keepOnScreen && !isOnScreen)
-        { // f
-            transform.position = pos; // g
+        {
+            transform.position = pos;
             isOnScreen = true;
+            offRight = offLeft = offUp = offDown = false; // e
         }
     }
 }
