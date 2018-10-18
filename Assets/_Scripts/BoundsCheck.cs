@@ -4,52 +4,47 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoundsCheck : MonoBehaviour
-{ 
+{
     [Header("Set in Inspector")]
     public float radius = 1f;
+    public bool keepOnScreen = true; // a
     [Header("Set Dynamically")]
+    public bool isOnScreen = true; // b
     public float camWidth;
     public float camHeight;
-    private readonly Vector3 boundSize;
-
-    public object Vector3boundSize { get; private set; }
-
     void Awake()
     {
         camHeight = Camera.main.orthographicSize; // b
         camWidth = camHeight * Camera.main.aspect; // c
     }
     void LateUpdate()
-    { // d
-        Vector3 pos = transform.position;
+    {
+        Vector3 pos = transform.position; // c
+        isOnScreen = true; // d
         if (pos.x > camWidth - radius)
         {
             pos.x = camWidth - radius;
+            isOnScreen = false; // e
         }
         if (pos.x < -camWidth + radius)
         {
             pos.x = -camWidth + radius;
+            isOnScreen = false; // e
         }
         if (pos.y > camHeight - radius)
         {
             pos.y = camHeight - radius;
+            isOnScreen = false; // e
         }
         if (pos.y < -camHeight + radius)
         {
             pos.y = -camHeight + radius;
+            isOnScreen = false; // e
         }
-        transform.position = pos;
-    }
-    // Draw the bounds in the Scene pane using OnDrawGizmos()
-    void OnDrawGizmos()
-    { 
-        if (!Application.isPlaying) return;
-        Vector3boundSize = newVector3(camWidth * 2, camHeight * 2, 0.1f);
-        Gizmos.DrawWireCube(Vector3.zero, boundSize);
-    }
-
-    private object newVector3(float v1, float v2, float v3)
-    {
-        throw new NotImplementedException();
+        if (keepOnScreen && !isOnScreen)
+        { // f
+            transform.position = pos; // g
+            isOnScreen = true;
+        }
     }
 }
