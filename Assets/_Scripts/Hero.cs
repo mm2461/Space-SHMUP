@@ -10,6 +10,8 @@ public class Hero : MonoBehaviour
     // These fields control the movement of the ship
     public float speed = 30;
     public float rollMult = -45;
+    public GameObject projectilePrefab;
+    public float projectileSpeed = 40;
     [Header("Set Dynamically")]
     [SerializeField]
     private float _shieldLevel = 1;
@@ -38,7 +40,21 @@ public class Hero : MonoBehaviour
         // Rotate the ship to make it feel more dynamic // c
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TempFire();
+        }
     }
+    void TempFire()
+    {
+        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+        projGO.transform.position = transform.position;
+        Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
+        rigidB.velocity = Vector3.up * projectileSpeed;
+    }
+
+
+
     void OnTriggerEnter(Collider other)
     {
         Transform rootT = other.gameObject.transform.root;
@@ -77,6 +93,7 @@ public class Hero : MonoBehaviour
             }
         }
     }
+
 
     
 }
