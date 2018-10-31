@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     public float damageDoneTime; // Time to stop showing damage
     public bool notifiedOfDestruction = false; // Will be used later
     protected BoundsCheck bndCheck;
+    public float powerUpDropChance = 1f; // Chance to drop a power-up // a
 
     void Awake()
     {
@@ -79,8 +80,14 @@ public class Enemy : MonoBehaviour
                 // Get the damage amount from the Main WEAP_DICT.
                 health -= Main.GetWeaponDefinition(p.type).damageOnHit;
                 if (health <= 0)
-                { // d
-                  // Destroy this Enemy
+                {
+                    // Tell the Main singleton that this ship was destroyed // b
+                    if (!notifiedOfDestruction)
+                    {
+                        Main.S.ShipDestroyed(this);
+                    }
+                    notifiedOfDestruction = true;
+                    // Destroy this Enemy
                     Destroy(this.gameObject);
                 }
                 Destroy(otherGO); // e
