@@ -16,6 +16,7 @@ public class Main : MonoBehaviour
     WeaponType.blaster, WeaponType.blaster,
     WeaponType.spread, WeaponType.shield };
     public GameObject prefabPowerUp;
+    internal float enemySpawnPadding;
 
     public void ShipDestroyed(Enemy e)
     { // c

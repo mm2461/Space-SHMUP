@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -104,6 +105,11 @@ public class Utils : MonoBehaviour
         // Expand _camBounds to encapsulate the extents.
         _camBounds.Encapsulate(boundTLN);
         _camBounds.Encapsulate(boundBRF);
+    }
+
+    internal static Vector3 ScreenBoundsCheck(object bounds, BoundsTest offScreen)
+    {
+        throw new NotImplementedException();
     }
 
     // Checks to see whether the Bounds bnd are within the camBounds
